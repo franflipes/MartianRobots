@@ -1,7 +1,5 @@
 # MartianRobots
-GuideSmiths Interview Code Challenge for .Net Developers 
 
-# Martian robots
 Here we present a problem to solve. We will value the use of tests for the code challenge resolution.
 
 ## The Problem
