@@ -41,8 +41,8 @@ namespace MartianRobots
             Robot robot = ActivatorUtilities.CreateInstance<Robot>(_service, "robot" + nRobots, OrientationHelper.GetOrientation(orientation));
             //Robot robot = new Robot("robot" + nRobots,new Tuple<int, int>(posX, posY),OrientationHelper.GetOrientation(orientation));
             _currentRobot = robot;
-            ((Mars)mars).ListOfRobots.Add((Robot)_currentRobot);
-            ((Mars)mars).AddRobot(robot, new Tuple<int, int>(posX, posY));
+            mars.ListOfRobots.Add((Robot)_currentRobot);
+            mars.AddRobot(robot, new Tuple<int, int>(posX, posY));
 
 
 

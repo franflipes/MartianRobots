@@ -9,6 +9,9 @@ namespace MartianRobots.Classes
 {
     public class Robot:IMovable
     {
+
+        public event Delegates.Notify MoveForwardEvent;
+
         #region ctor
         public Robot(string name, Orientation orientation)
         {
@@ -17,6 +20,8 @@ namespace MartianRobots.Classes
             //_position = initialPosition;
             _orientation = orientation;
         }
+
+        
         #endregion
 
         #region Robot Orientation
@@ -36,6 +41,9 @@ namespace MartianRobots.Classes
 
         #region IsLost
         private bool _isLost;
+
+        
+
         public bool IsLost { 
             get { return _isLost; }
         }
@@ -105,9 +113,9 @@ namespace MartianRobots.Classes
 
 
         #region events
-        public delegate void Notify(Robot robot,Orientation orientation);
+        
 
-        public event Notify MoveForwardEvent;
+        
         #endregion
     }
 }
