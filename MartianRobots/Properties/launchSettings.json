@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MartianRobots": {
+      "commandName": "Project",
+      "commandLineArgs": "input.txt"
+    }
+  }
+}

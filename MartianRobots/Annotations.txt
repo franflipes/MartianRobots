@@ -1,0 +1,8 @@
+﻿To whom it may concern,
+
+In a first version I created the Robot class with 2 properties for the currentPosition and the previous position. Also I didn´t have a surface class modelled  using an array, so I was just controlling boundaries in Planet class using 2 properties boundaryX/BoundaryY and if [0,0] < Robot.Position < [boundaryX,BoundaryY]. Was straighforward and was working perfectly.
+
+I decided to switch this idea, first because I don´t think a Robot that is left stranded in a strange planet doesn´t know where it is, I can only think a Robot can know its orientation for example using a compass. Also, having a class surface which holds the robots that are moving over it, it is more realistic and better modeled as requested in Readme. This new approach added some complexity but also allowed me to introduce events and Exceptions, to communicate and to know when the robot is out of bounds.
+
+Thanks in advance,
+Francisco
