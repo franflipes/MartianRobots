@@ -36,10 +36,10 @@ namespace MartianRobots.Tests
         [Test]
         public void MoveRobotForwardOnEdgeCauseException()
         {
-            _surface.AddRobot((Robot)_robotPointingNorth, new Tuple<int, int>(1, 1));
+            _surface.AddObject(_robotPointingNorth, new Tuple<int, int>(1, 1));
            
             Assert.Throws<IndexOutOfRangeException>(() => {
-                _surface.MoveRobot(_robotPointingNorth, Orientation.N);
+                _surface.MoveObject(_robotPointingNorth, Orientation.N);
             });
 
 
@@ -48,9 +48,9 @@ namespace MartianRobots.Tests
         [Test]
         public void ExistRobotOnSurface()
         {
-            _surface.AddRobot((Robot)_robotPointingNorth, new Tuple<int, int>(1, 1));
+            _surface.AddObject(_robotPointingNorth, new Tuple<int, int>(1, 1));
 
-            bool existsRobot=_surface.ExistAnyRobotOnSurface(new Tuple<int, int>(1, 1));
+            bool existsRobot=_surface.ExistAnyObjectOnSurface(new Tuple<int, int>(1, 1));
 
             Assert.IsTrue(existsRobot);
 

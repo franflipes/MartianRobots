@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MartianRobots.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MartianRobots.Classes
 {
-    public class Planet
+    public class Planet:IBounded
     {
 
         protected Surface _surface;
@@ -28,23 +29,20 @@ namespace MartianRobots.Classes
 
         public Boolean IsRobotAlive(Robot robot)
         {
-            Tuple<int, int>  pos = _surface.GetRobotLastKnownPosition(robot);
+            Tuple<int, int>  pos = _surface.GetObjectLastKnownPosition(robot);
 
-            return _surface.ExistAnyRobotOnSurface(pos) ? true : false;
+            return _surface.ExistAnyObjectOnSurface(pos) ? true : false;
             
         }
 
         public void AddRobot(Robot robot, Tuple<int, int> initialPosition)
         {
-            _surface.AddRobot(robot, initialPosition);
+            _surface.AddObject(robot, initialPosition);
         }
 
 
         //We ask the surface for the last known position of a given robot
-        public Tuple<int, int> GetRobotLastKnownPosition(Robot robot) 
-        {
-            return _surface.GetRobotLastKnownPosition(robot);
-        }
+       
         #endregion
     }
 }

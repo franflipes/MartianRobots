@@ -5,7 +5,7 @@ using MartianRobots.Interfaces;
 
 namespace MartianRobots.Classes
 {
-    public class Mars : Planet , IBounded
+    public class Mars : Planet 
     {
 
         #region ctor
@@ -18,6 +18,10 @@ namespace MartianRobots.Classes
 
         public List<Robot> ListOfRobots { get; set; }
 
-       
+        public Tuple<int, int> GetRobotLastKnownPosition(IMovable robot)
+        {
+            return _surface.GetObjectLastKnownPosition(robot);
+        }
+
     }
 }
