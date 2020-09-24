@@ -3,6 +3,8 @@ using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using MartianRobots.Classes;
 using MartianRobots.Interfaces;
+using MartianRobots.Helpers;
+using Microsoft.Extensions.Configuration;
 
 namespace MartianRobots
 {
@@ -64,10 +66,21 @@ namespace MartianRobots
             services.AddSingleton<IPlanetManager, MarsManager>();
             services.AddSingleton<Surface>();
             services.AddSingleton<ConsoleApplication>();
+            services.AddSingleton<InstructionManager>();
+            services.AddSingleton<IConfiguration>(AddConfiguration());
             _serviceProvider = services.BuildServiceProvider(true);
         }
 
-        private static void DisposeServices()
+        private static IConfiguration AddConfiguration()
+        {
+            var builder = new ConfigurationBuilder()
+              .SetBasePath(Directory.GetCurrentDirectory())
+              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfiguration configuration = builder.Build();
+            return configuration;
+        }
+
+            private static void DisposeServices()
         {
             if (_serviceProvider == null)
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using System.Text;
 using MartianRobots.Classes;
 using MartianRobots.Enums;
@@ -19,15 +20,21 @@ namespace MartianRobots
         //we keep track of the current robot as we deal with many of them along the input processing
         private Robot _currentRobot;
         private readonly IServiceProvider _service;
+        private readonly IConfiguration _configuration;
+        private readonly InstructionManager _instructionManager;
 
         //List of position plus orientation that a move forward would cause to lose a robot
-        private IList<Tuple<int, int, Orientation>> _scents;
+        private IList<Scent> _scents;
         
 
-        public MarsManager(IServiceProvider service)
+        public MarsManager(IServiceProvider service,IConfiguration configuration, InstructionManager instructionManager)
         {
             _service = service;            
-            _scents = new List<Tuple<int, int, Orientation>>();
+            _scents = new List<Scent>();
+            _instructionManager = instructionManager;
+            _configuration = configuration;
+            String instructionsFile=_configuration["Instructions"];
+            _instructionManager.LoadUpInstructions(instructionsFile);
         }
 
         #region Manage to create Planet and Robots
@@ -56,32 +63,31 @@ namespace MartianRobots
             //loop through instructions
             foreach (char instruction in instructionsArray)
             {
-                if (instruction == 'R')
-                {
-                    _currentRobot.TurnRight();
-                }
-                else if (instruction == 'L')
-                {
-                    _currentRobot.TurnLeft();
-                }
-                else if (instruction == 'F')
-                {
-                    //If exists any scent with same position and orientation, then a move forward would cause in a robot loss, 
-                    //so we disobey and continue with next instruction
-                    if (_scents.Any(s => s.Item1 == mars.GetRobotLastKnownPosition(_currentRobot).Item1 && s.Item2 == mars.GetRobotLastKnownPosition(_currentRobot).Item2 && s.Item3 == _currentRobot.Orientation))
-                        continue;
-                     _currentRobot.MoveForward();
+                _instructionManager.ExecuteInstruction(_currentRobot,_scents,mars, instruction);
+                //if (instruction == 'F')
+                //{
+                //    //If exists any scent with same position and orientation, then a move forward would cause in a robot loss, 
+                //    //so we disobey and continue with next instruction
+                //    if (_scents.Any(s => s.Node.Item1 == mars.GetRobotLastKnownPosition(_currentRobot).Item1 && s.Node.Item2 == mars.GetRobotLastKnownPosition(_currentRobot).Item2 && s.Node.Item3 == _currentRobot.Orientation))
+                //        continue;
+                //    _instructionManager.ExecuteInstruction(_currentRobot, instruction);
 
-                    //once robot´s moved forward, we are in good place to ask the planet if the robot´s alive,
-                    //if not we use last'known position and same orientation to save as a scent and return because the robot caused lost
-                    //if (_currentRobot.IsLost)
-                    if (!mars.IsRobotAlive(_currentRobot))
-                    {
-                        Console.WriteLine(mars.GetRobotLastKnownPosition(_currentRobot).Item1 + " " + mars.GetRobotLastKnownPosition(_currentRobot).Item2 + " " + _currentRobot.Orientation + " LOST");
-                        _scents.Add(new Tuple<int, int, Orientation>(mars.GetRobotLastKnownPosition(_currentRobot).Item1, mars.GetRobotLastKnownPosition(_currentRobot).Item2, _currentRobot.Orientation));
-                        return;
-                    }
-                }
+                //    //once robot´s moved forward, we are in good place to ask the planet if the robot´s alive,
+                //    //if not we use last'known position and same orientation to save as a scent and return because the robot caused lost
+                //    //if (_currentRobot.IsLost)
+                //    if (!mars.IsRobotAlive(_currentRobot))
+                //    {
+                //        Console.WriteLine(mars.GetRobotLastKnownPosition(_currentRobot).Item1 + " " + mars.GetRobotLastKnownPosition(_currentRobot).Item2 + " " + _currentRobot.Orientation + " LOST");
+                //        _scents.Add(new Scent(mars.GetRobotLastKnownPosition(_currentRobot).Item1, mars.GetRobotLastKnownPosition(_currentRobot).Item2, _currentRobot.Orientation));
+                //        return;
+                //    }
+                //}
+                //else 
+                //{
+                //    _instructionManager.ExecuteInstruction(_currentRobot, instruction);
+                //}
+                if (_currentRobot.IsLost)
+                    return;
             }
             Console.WriteLine(mars.GetRobotLastKnownPosition(_currentRobot).Item1 + " " + mars.GetRobotLastKnownPosition(_currentRobot).Item2 + " " + _currentRobot.Orientation );
         }
