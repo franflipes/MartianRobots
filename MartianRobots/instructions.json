@@ -1,0 +1,7 @@
+[
+  {
+    "key": "H",
+    "Description": "Chess Horse Move",
+    "CustomCode": "(x, y, z) =>{x.MoveForward();x.MoveForward();x.TurnRight();x.MoveForward();}"
+  }
+]
